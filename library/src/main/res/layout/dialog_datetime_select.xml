@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.wdullaer.materialdatetimepicker.date.dialog.DialogConfirmTitleBar
+        android:id="@+id/dialog_confirm_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:dialogConfirmTitleBar_background="@android:color/white"
+        app:dialogConfirmTitleBar_leftButtonColor="#333333"
+        app:dialogConfirmTitleBar_titleNameColor="#333333"
+        app:dialogConfirmTitleBar_rightButtonColor="#66D4C3" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#EBEBEB" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@android:color/white"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/fragment_rent_out_btn_filter_year"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <com.wdullaer.materialdatetimepicker.date.dialog.FilterTextView
+                android:id="@+id/dialog_datetime_filter_year"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:ellipsize="none"
+                android:singleLine="true"
+                android:text="2020年"
+                android:textColor="#333333"
+                android:textSize="14sp"
+                app:ftv_icon="@drawable/icon_down"
+                app:ftv_iconLocation="RIGHT"
+                app:ftv_iconSelected="@drawable/icon_up" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/fragment_rent_out_btn_filter_month"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <com.wdullaer.materialdatetimepicker.date.dialog.FilterTextView
+                android:id="@+id/dialog_datetime_filter_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:ellipsize="none"
+                android:singleLine="true"
+                android:text="2020年"
+                android:textColor="#333333"
+                android:textSize="14sp"
+                app:ftv_icon="@drawable/icon_down"
+                app:ftv_iconLocation="RIGHT"
+                app:ftv_iconSelected="@drawable/icon_up" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#EBEBEB" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.wdullaer.materialdatetimepicker.date.AccessibleDateAnimator
+                android:id="@+id/mdtp_animator"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/mdtp_date_picker_view_animator_height_v2"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:gravity="center" />
+
+            <LinearLayout
+                android:id="@+id/dialog_time_select_rent_cal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="308dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:text="按月选择："
+                    android:textSize="14sp" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        android:divider="@drawable/divider_block_10dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:showDividers="middle">
+
+                        <TextView
+                            android:id="@+id/dialog_datetime_select_1"
+                            android:layout_width="64dp"
+                            android:layout_height="33dp"
+                            android:background="@drawable/button_selector"
+                            android:gravity="center"
+                            android:minWidth="53dp"
+                            android:minHeight="30dp"
+                            android:text="3个月"
+                            android:textColor="#333333"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/dialog_datetime_select_2"
+                            android:layout_width="64dp"
+                            android:layout_height="33dp"
+                            android:background="@drawable/button_selector"
+                            android:gravity="center"
+                            android:minWidth="53dp"
+                            android:minHeight="30dp"
+                            android:text="6个月"
+                            android:textColor="#333333"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/dialog_datetime_select_3"
+                            android:layout_width="64dp"
+                            android:layout_height="33dp"
+                            android:background="@drawable/button_selector"
+                            android:gravity="center"
+                            android:minWidth="53dp"
+                            android:minHeight="30dp"
+                            android:text="1年"
+                            android:textColor="#333333"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/year_list"
+            android:layout_width="match_parent"
+            android:layout_height="369dp"
+            android:background="@android:color/white"
+            android:divider="@drawable/divider_border_v"
+            android:scrollbars="none"
+            android:visibility="gone" />
+
+        <ListView
+            android:id="@+id/month_list"
+            android:layout_width="match_parent"
+            android:layout_height="369dp"
+            android:background="@android:color/white"
+            android:divider="@drawable/divider_border_v"
+            android:scrollbars="none"
+            android:visibility="gone" />
+    </FrameLayout>
+
+
+</LinearLayout>

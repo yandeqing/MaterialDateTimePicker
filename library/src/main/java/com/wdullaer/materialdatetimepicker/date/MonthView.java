@@ -19,6 +19,7 @@ package com.wdullaer.materialdatetimepicker.date;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.Style;
@@ -26,17 +27,18 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
-import androidx.customview.widget.ExploreByTouchHelper;
 import android.text.format.DateFormat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.customview.widget.ExploreByTouchHelper;
 
 import com.wdullaer.materialdatetimepicker.R;
 import com.wdullaer.materialdatetimepicker.date.MonthAdapter.CalendarDay;
@@ -64,6 +66,7 @@ public abstract class MonthView extends View {
 
     protected static int DAY_SEPARATOR_WIDTH = 1;
     protected static int MINI_DAY_NUMBER_TEXT_SIZE;
+    protected static int MINI_TODAY_TEXT_SIZE;
     protected static int MONTH_LABEL_TEXT_SIZE;
     protected static int MONTH_DAY_LABEL_TEXT_SIZE;
     protected static int MONTH_HEADER_SIZE;
@@ -81,6 +84,7 @@ public abstract class MonthView extends View {
     private String mMonthTitleTypeface;
 
     protected Paint mMonthNumPaint;
+    protected Paint mTodyPaint;
     protected Paint mMonthTitlePaint;
     protected Paint mSelectedCirclePaint;
     protected Paint mMonthDayLabelPaint;
@@ -163,6 +167,7 @@ public abstract class MonthView extends View {
         mStringBuilder = new StringBuilder(50);
 
         MINI_DAY_NUMBER_TEXT_SIZE = res.getDimensionPixelSize(R.dimen.mdtp_day_number_size);
+        MINI_TODAY_TEXT_SIZE = res.getDimensionPixelSize(R.dimen.mdtp_today_number_size);
         MONTH_LABEL_TEXT_SIZE = res.getDimensionPixelSize(R.dimen.mdtp_month_label_size);
         MONTH_DAY_LABEL_TEXT_SIZE = res.getDimensionPixelSize(R.dimen.mdtp_month_day_label_text_size);
         MONTH_HEADER_SIZE = res.getDimensionPixelOffset(R.dimen.mdtp_month_list_item_header_height);
@@ -243,13 +248,13 @@ public abstract class MonthView extends View {
             mMonthTitlePaint.setFakeBoldText(true);
         mMonthTitlePaint.setAntiAlias(true);
         mMonthTitlePaint.setTextSize(MONTH_LABEL_TEXT_SIZE);
-        mMonthTitlePaint.setTypeface(Typeface.create(mMonthTitleTypeface, Typeface.BOLD));
+        mMonthTitlePaint.setTypeface(Typeface.create(mMonthTitleTypeface, Typeface.NORMAL));
         mMonthTitlePaint.setColor(mDayTextColor);
         mMonthTitlePaint.setTextAlign(Align.CENTER);
         mMonthTitlePaint.setStyle(Style.FILL);
 
         mSelectedCirclePaint = new Paint();
-        mSelectedCirclePaint.setFakeBoldText(true);
+        mSelectedCirclePaint.setFakeBoldText(false);
         mSelectedCirclePaint.setAntiAlias(true);
         mSelectedCirclePaint.setColor(mTodayNumberColor);
         mSelectedCirclePaint.setTextAlign(Align.CENTER);
@@ -260,10 +265,10 @@ public abstract class MonthView extends View {
         mMonthDayLabelPaint.setAntiAlias(true);
         mMonthDayLabelPaint.setTextSize(MONTH_DAY_LABEL_TEXT_SIZE);
         mMonthDayLabelPaint.setColor(mMonthDayTextColor);
-        mMonthTitlePaint.setTypeface(Typeface.create(mDayOfWeekTypeface, Typeface.BOLD));
+        mMonthTitlePaint.setTypeface(Typeface.create(mDayOfWeekTypeface, Typeface.NORMAL));
         mMonthDayLabelPaint.setStyle(Style.FILL);
         mMonthDayLabelPaint.setTextAlign(Align.CENTER);
-        mMonthDayLabelPaint.setFakeBoldText(true);
+        mMonthDayLabelPaint.setFakeBoldText(false);
 
         mMonthNumPaint = new Paint();
         mMonthNumPaint.setAntiAlias(true);
@@ -271,11 +276,19 @@ public abstract class MonthView extends View {
         mMonthNumPaint.setStyle(Style.FILL);
         mMonthNumPaint.setTextAlign(Align.CENTER);
         mMonthNumPaint.setFakeBoldText(false);
+
+        mTodyPaint = new Paint();
+        mTodyPaint.setAntiAlias(true);
+        mTodyPaint.setTextSize(MINI_TODAY_TEXT_SIZE);
+        mTodyPaint.setColor(Color.parseColor("#FC992B"));
+        mTodyPaint.setStyle(Style.FILL);
+        mTodyPaint.setTextAlign(Align.CENTER);
+        mTodyPaint.setFakeBoldText(false);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        drawMonthTitle(canvas);
+//        drawMonthTitle(canvas);
         drawMonthDayLabels(canvas);
         drawMonthNums(canvas);
     }
@@ -325,7 +338,7 @@ public abstract class MonthView extends View {
                 mToday = day;
             }
         }
-        mNumRows = calculateNumRows();
+//        mNumRows = calculateNumRows();
 
         // Invalidate cached accessibility information.
         mTouchHelper.invalidateRoot();
@@ -406,7 +419,8 @@ public abstract class MonthView extends View {
         Locale locale = mController.getLocale();
         String pattern = "MMMM yyyy";
 
-        if (Build.VERSION.SDK_INT < 18) pattern = getContext().getResources().getString(R.string.mdtp_date_v1_monthyear);
+        if (Build.VERSION.SDK_INT < 18)
+            pattern = getContext().getResources().getString(R.string.mdtp_date_v1_monthyear);
         else pattern = DateFormat.getBestDateTimePattern(locale, pattern);
 
         SimpleDateFormat formatter = new SimpleDateFormat(pattern, locale);
@@ -553,9 +567,9 @@ public abstract class MonthView extends View {
     }
 
     /**
-     * @param year as an int
+     * @param year  as an int
      * @param month as an int
-     * @param day as an int
+     * @param day   as an int
      * @return true if the given date should be highlighted
      */
     protected boolean isHighlighted(int year, int month, int day) {

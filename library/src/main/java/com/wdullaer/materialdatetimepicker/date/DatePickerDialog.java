@@ -36,12 +36,14 @@ import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+
 import com.wdullaer.materialdatetimepicker.HapticFeedbackController;
 import com.wdullaer.materialdatetimepicker.R;
 import com.wdullaer.materialdatetimepicker.Utils;
@@ -52,6 +54,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.TreeSet;
 
 /**
  * Dialog allowing users to select a date.
@@ -169,7 +172,7 @@ public class DatePickerDialog extends AppCompatDialogFragment implements
          * @param view        The view associated with this listener.
          * @param year        The year that was set.
          * @param monthOfYear The month that was set (0-11) for compatibility
-         *                    with {@link java.util.Calendar}.
+         *                    with {@link Calendar}.
          * @param dayOfMonth  The day of the month that was set.
          */
         void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth);
@@ -178,7 +181,7 @@ public class DatePickerDialog extends AppCompatDialogFragment implements
     /**
      * The callback used to notify other date picker components of a change in selected date.
      */
-    protected interface OnDateChangedListener {
+    public interface OnDateChangedListener {
         void onDateChanged();
     }
 
@@ -842,6 +845,17 @@ public class DatePickerDialog extends AppCompatDialogFragment implements
      */
     @SuppressWarnings("unused")
     public void setSelectableDays(Calendar[] selectableDays) {
+        mDefaultLimiter.setSelectableDays(selectableDays);
+        if (mDayPickerView != null) mDayPickerView.onChange();
+    }
+    /**
+     * Sets a list of days which are the only valid selections.
+     * Setting this value will take precedence over using setMinDate() and setMaxDate()
+     *
+     * @param selectableDays an Array of Calendar Objects containing the selectable dates
+     */
+    @SuppressWarnings("unused")
+    public void setSelectableDays(TreeSet<Calendar> selectableDays) {
         mDefaultLimiter.setSelectableDays(selectableDays);
         if (mDayPickerView != null) mDayPickerView.onChange();
     }

@@ -11,8 +11,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.date.dialog.DateTime;
+import com.wdullaer.materialdatetimepicker.date.dialog.DateTimeSelectDialog;
 
 import java.util.Calendar;
 
@@ -82,62 +85,74 @@ public class DatePickerFragment extends Fragment implements DatePickerDialog.OnD
             The sample app is reusing them because it is useful when looking for regressions
             during testing
              */
-            if (dpd == null) {
-                dpd = DatePickerDialog.newInstance(
-                        DatePickerFragment.this,
-                        now.get(Calendar.YEAR),
-                        now.get(Calendar.MONTH),
-                        now.get(Calendar.DAY_OF_MONTH)
-                );
-            } else {
-                dpd.initialize(
-                        DatePickerFragment.this,
-                        now.get(Calendar.YEAR),
-                        now.get(Calendar.MONTH),
-                        now.get(Calendar.DAY_OF_MONTH)
-                );
-            }
-            dpd.setThemeDark(modeDarkDate.isChecked());
-            dpd.vibrate(vibrateDate.isChecked());
-            dpd.dismissOnPause(dismissDate.isChecked());
-            dpd.showYearPickerFirst(showYearFirst.isChecked());
-            dpd.setVersion(showVersion2.isChecked() ? DatePickerDialog.Version.VERSION_2 : DatePickerDialog.Version.VERSION_1);
-            if (modeCustomAccentDate.isChecked()) {
-                dpd.setAccentColor(Color.parseColor("#9C27B0"));
-            }
-            if (titleDate.isChecked()) {
-                dpd.setTitle("DatePicker Title");
-            }
-            if (highlightDays.isChecked()) {
-                Calendar date1 = Calendar.getInstance();
-                Calendar date2 = Calendar.getInstance();
-                date2.add(Calendar.WEEK_OF_MONTH, -1);
-                Calendar date3 = Calendar.getInstance();
-                date3.add(Calendar.WEEK_OF_MONTH, 1);
-                Calendar[] days = {date1, date2, date3};
-                dpd.setHighlightedDays(days);
-            }
-            if (limitSelectableDays.isChecked()) {
-                Calendar[] days = new Calendar[13];
-                for (int i = -6; i < 7; i++) {
-                    Calendar day = Calendar.getInstance();
-                    day.add(Calendar.DAY_OF_MONTH, i * 2);
-                    days[i + 6] = day;
-                }
-                dpd.setSelectableDays(days);
-            }
-            if (switchOrientation.isChecked()) {
-                if (dpd.getVersion() == DatePickerDialog.Version.VERSION_1) {
-                    dpd.setScrollOrientation(DatePickerDialog.ScrollOrientation.HORIZONTAL);
-                } else {
-                    dpd.setScrollOrientation(DatePickerDialog.ScrollOrientation.VERTICAL);
-                }
-            }
-            dpd.setOnCancelListener(dialog -> {
-                Log.d("DatePickerDialog", "Dialog was cancelled");
-                dpd = null;
-            });
-            dpd.show(requireFragmentManager(), "Datepickerdialog");
+//            if (dpd == null) {
+//                dpd = DatePickerDialog.newInstance(
+//                        DatePickerFragment.this
+////                dpd = DatePickerDialog.newInstance(
+////                        DatePickerFragment.this,
+////                        now.get(Calendar.YEAR),
+////                        now.get(Calendar.MONTH),
+////                        now.get(Calendar.DAY_OF_MONTH)
+//                );
+//            } else {
+//                dpd.initialize(
+//                        DatePickerFragment.this,
+//                        now.get(Calendar.YEAR),
+//                        now.get(Calendar.MONTH),
+//                        now.get(Calendar.DAY_OF_MONTH)
+//                );
+//            }
+//            dpd.setThemeDark(modeDarkDate.isChecked());
+//            dpd.vibrate(vibrateDate.isChecked());
+//            dpd.dismissOnPause(dismissDate.isChecked());
+//            dpd.showYearPickerFirst(showYearFirst.isChecked());
+//            dpd.setVersion(showVersion2.isChecked() ? DatePickerDialog.Version.VERSION_2 : DatePickerDialog.Version.VERSION_1);
+//            if (modeCustomAccentDate.isChecked()) {
+//                dpd.setAccentColor(Color.parseColor("#9C27B0"));
+//            }
+//            if (titleDate.isChecked()) {
+//                dpd.setTitle("DatePicker Title");
+//            }
+//            if (highlightDays.isChecked()) {
+//                Calendar date1 = Calendar.getInstance();
+//                Calendar date2 = Calendar.getInstance();
+//                date2.add(Calendar.WEEK_OF_MONTH, -1);
+//                Calendar date3 = Calendar.getInstance();
+//                date3.add(Calendar.WEEK_OF_MONTH, 1);
+//                Calendar[] days = {date1, date2, date3};
+//                dpd.setHighlightedDays(days);
+//            }
+//            if (limitSelectableDays.isChecked()) {
+//                Calendar[] days = new Calendar[13];
+//                for (int i = -6; i < 7; i++) {
+//                    Calendar day = Calendar.getInstance();
+//                    day.add(Calendar.DAY_OF_MONTH, i * 2);
+//                    days[i + 6] = day;
+//                }
+//                dpd.setSelectableDays(days);
+//            }
+//            if (switchOrientation.isChecked()) {
+//                if (dpd.getVersion() == DatePickerDialog.Version.VERSION_1) {
+//                    dpd.setScrollOrientation(DatePickerDialog.ScrollOrientation.HORIZONTAL);
+//                } else {
+//                    dpd.setScrollOrientation(DatePickerDialog.ScrollOrientation.VERTICAL);
+//                }
+//            }
+//            dpd.setOnCancelListener(dialog -> {
+//                Log.d("DatePickerDialog", "Dialog was cancelled");
+//                dpd = null;
+//            });
+//            dpd.show(requireFragmentManager(), "Datepickerdialog");
+            new DateTimeSelectDialog(getContext())
+                    .setStartTime(DateTime.now())
+                    .setTitleName("请选择起始日期")
+                    .setLeaseTerm(true)
+                    .setOnTimeSelectDialogListener(new DateTimeSelectDialog.OnTimeSelectDialogListener() {
+                        @Override
+                        public void onTimeSelect(DateTime dateTime) {
+                            Toast.makeText(getContext(), dateTime.formatDateTime(),Toast.LENGTH_LONG).show();
+                        }
+                    }).show();
         });
 
         return view;

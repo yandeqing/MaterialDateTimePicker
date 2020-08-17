@@ -18,7 +18,8 @@ package com.wdullaer.materialdatetimepicker.date;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Typeface;
+import android.graphics.Color;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 
 public class SimpleMonthView extends MonthView {
@@ -30,31 +31,41 @@ public class SimpleMonthView extends MonthView {
     @Override
     public void drawMonthDay(Canvas canvas, int year, int month, int day,
                              int x, int y, int startX, int stopX, int startY, int stopY) {
-        if (mSelectedDay == day) {
-            canvas.drawCircle(x, y - (MINI_DAY_NUMBER_TEXT_SIZE / 3), DAY_SELECTED_CIRCLE_SIZE,
-                    mSelectedCirclePaint);
+        if (!mController.isOutOfRange(year, month, day) && mSelectedDay == day) {
+            RectF rectf = new RectF(startX + 10, startY, stopX - 10, stopY + 15);
+            int rx = MINI_DAY_NUMBER_TEXT_SIZE / 3;
+            canvas.drawRoundRect(rectf, rx, rx, mSelectedCirclePaint);
         }
 
         if (isHighlighted(year, month, day) && mSelectedDay != day) {
             canvas.drawCircle(x, y + MINI_DAY_NUMBER_TEXT_SIZE - DAY_HIGHLIGHT_CIRCLE_MARGIN,
                     DAY_HIGHLIGHT_CIRCLE_SIZE, mSelectedCirclePaint);
-            mMonthNumPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+//            mMonthNumPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         } else {
-            mMonthNumPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+//            mMonthNumPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         }
 
         // gray out the day number if it's outside the range.
         if (mController.isOutOfRange(year, month, day)) {
             mMonthNumPaint.setColor(mDisabledDayTextColor);
         } else if (mSelectedDay == day) {
-            mMonthNumPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+//            mMonthNumPaint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
             mMonthNumPaint.setColor(mSelectedDayTextColor);
         } else if (mHasToday && mToday == day) {
-            mMonthNumPaint.setColor(mTodayNumberColor);
+            mMonthNumPaint.setColor(mDayTextColor);
         } else {
             mMonthNumPaint.setColor(isHighlighted(year, month, day) ? mHighlightedDayTextColor : mDayTextColor);
         }
-
+        mMonthNumPaint.setTextSize(MINI_DAY_NUMBER_TEXT_SIZE);
         canvas.drawText(String.format(mController.getLocale(), "%d", day), x, y, mMonthNumPaint);
+        if (mToday == day) {
+            mMonthNumPaint.setTextSize(MINI_TODAY_TEXT_SIZE);
+            if (mSelectedDay == day&&!mController.isOutOfRange(year, month, day) ) {
+                mMonthNumPaint.setColor(mSelectedDayTextColor);
+            } else {
+                mMonthNumPaint.setColor(Color.parseColor("#FC992B"));
+            }
+            canvas.drawText("今天", x, y - 45, mMonthNumPaint);
+        }
     }
 }

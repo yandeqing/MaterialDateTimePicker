@@ -28,7 +28,7 @@ import java.util.HashSet;
 import java.util.TimeZone;
 import java.util.TreeSet;
 
-public class DefaultDateRangeLimiter implements DateRangeLimiter {
+public class CustomDateRangeLimiter implements DateRangeLimiter {
     private static final int DEFAULT_START_YEAR = 1900;
     private static final int DEFAULT_END_YEAR = 2100;
 
@@ -40,17 +40,17 @@ public class DefaultDateRangeLimiter implements DateRangeLimiter {
     private TreeSet<Calendar> selectableDays = new TreeSet<>();
     private HashSet<Calendar> disabledDays = new HashSet<>();
 
-    public DefaultDateRangeLimiter() {
+    public CustomDateRangeLimiter() {
     }
 
-    public DefaultDateRangeLimiter(int mMinYear, int mMaxYear) {
+    public CustomDateRangeLimiter(int mMinYear, int mMaxYear) {
         this.mMinYear = mMinYear;
         this.mMaxYear = mMaxYear;
     }
 
 
     @SuppressWarnings({"unchecked", "WeakerAccess"})
-    public DefaultDateRangeLimiter(Parcel in) {
+    public CustomDateRangeLimiter(Parcel in) {
         mMinYear = in.readInt();
         mMaxYear = in.readInt();
         mMinDate = (Calendar) in.readSerializable();
@@ -75,14 +75,14 @@ public class DefaultDateRangeLimiter implements DateRangeLimiter {
     }
 
     @SuppressWarnings("WeakerAccess")
-    public static final Creator<DefaultDateRangeLimiter> CREATOR
-            = new Creator<DefaultDateRangeLimiter>() {
-        public DefaultDateRangeLimiter createFromParcel(Parcel in) {
-            return new DefaultDateRangeLimiter(in);
+    public static final Creator<CustomDateRangeLimiter> CREATOR
+            = new Creator<CustomDateRangeLimiter>() {
+        public CustomDateRangeLimiter createFromParcel(Parcel in) {
+            return new CustomDateRangeLimiter(in);
         }
 
-        public DefaultDateRangeLimiter[] newArray(int size) {
-            return new DefaultDateRangeLimiter[size];
+        public CustomDateRangeLimiter[] newArray(int size) {
+            return new CustomDateRangeLimiter[size];
         }
     };
 
@@ -147,21 +147,22 @@ public class DefaultDateRangeLimiter implements DateRangeLimiter {
     public int getMinYear() {
         if (!selectableDays.isEmpty()) return selectableDays.first().get(Calendar.YEAR);
         // Ensure no years can be selected outside of the given minimum date
-        return mMinDate != null && mMinDate.get(Calendar.YEAR) > mMinYear ? mMinDate.get(Calendar.YEAR) : mMinYear;
+        return mMinYear;
+//        return mMinDate != null && mMinDate.get(Calendar.YEAR) > mMinYear ? mMinDate.get(Calendar.YEAR) : mMinYear;
     }
 
     @Override
     public int getMaxYear() {
         if (!selectableDays.isEmpty()) return selectableDays.last().get(Calendar.YEAR);
         // Ensure no years can be selected outside of the given maximum date
-        return mMaxDate != null && mMaxDate.get(Calendar.YEAR) < mMaxYear ? mMaxDate.get(Calendar.YEAR) : mMaxYear;
+        return mMinYear;
+//        return mMaxDate != null && mMaxDate.get(Calendar.YEAR) < mMaxYear ? mMaxDate.get(Calendar.YEAR) : mMaxYear;
     }
 
     @Override
     public @NonNull
     Calendar getStartDate() {
         if (!selectableDays.isEmpty()) return (Calendar) selectableDays.first().clone();
-        if (mMinDate != null) return (Calendar) mMinDate.clone();
         TimeZone timeZone = mController == null ? TimeZone.getDefault() : mController.getTimeZone();
         Calendar output = Calendar.getInstance(timeZone);
         output.set(Calendar.YEAR, mMinYear);
@@ -174,7 +175,6 @@ public class DefaultDateRangeLimiter implements DateRangeLimiter {
     public @NonNull
     Calendar getEndDate() {
         if (!selectableDays.isEmpty()) return (Calendar) selectableDays.last().clone();
-        if (mMaxDate != null) return (Calendar) mMaxDate.clone();
         TimeZone timeZone = mController == null ? TimeZone.getDefault() : mController.getTimeZone();
         Calendar output = Calendar.getInstance(timeZone);
         output.set(Calendar.YEAR, mMaxYear);
@@ -245,8 +245,8 @@ public class DefaultDateRangeLimiter implements DateRangeLimiter {
         }
 
         if (!disabledDays.isEmpty()) {
-            Calendar forwardDate = isBeforeMin(calendar) ? getStartDate() : (Calendar) calendar.clone();
-            Calendar backwardDate = isAfterMax(calendar) ? getEndDate() : (Calendar) calendar.clone();
+            Calendar forwardDate = (Calendar) calendar.clone();
+            Calendar backwardDate = (Calendar) calendar.clone();
             while (isDisabled(forwardDate) && isDisabled(backwardDate)) {
                 forwardDate.add(Calendar.DAY_OF_MONTH, 1);
                 backwardDate.add(Calendar.DAY_OF_MONTH, -1);
@@ -259,24 +259,6 @@ public class DefaultDateRangeLimiter implements DateRangeLimiter {
             }
         }
 
-        TimeZone timezone = mController == null ? TimeZone.getDefault() : mController.getTimeZone();
-        if (isBeforeMin(calendar)) {
-            if (mMinDate != null) return (Calendar) mMinDate.clone();
-            Calendar output = Calendar.getInstance(timezone);
-            output.set(Calendar.YEAR, mMinYear);
-            output.set(Calendar.MONTH, Calendar.JANUARY);
-            output.set(Calendar.DAY_OF_MONTH, 1);
-            return Utils.trimToMidnight(output);
-        }
-
-        if (isAfterMax(calendar)) {
-            if (mMaxDate != null) return (Calendar) mMaxDate.clone();
-            Calendar output = Calendar.getInstance(timezone);
-            output.set(Calendar.YEAR, mMaxYear);
-            output.set(Calendar.MONTH, Calendar.DECEMBER);
-            output.set(Calendar.DAY_OF_MONTH, 31);
-            return Utils.trimToMidnight(output);
-        }
 
         return calendar;
     }

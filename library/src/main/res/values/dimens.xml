@@ -53,7 +53,8 @@
     <dimen name="mdtp_selected_calendar_layout_height">155dp</dimen>
     <dimen name="mdtp_selected_date_height">140dp</dimen>
     <dimen name="mdtp_date_picker_view_animator_height">252dp</dimen>
-    <dimen name="mdtp_date_picker_view_animator_height_v2">320dp</dimen>
+    <dimen name="mdtp_date_picker_view_animator_height_v2">324dp</dimen>
+<!--    <dimen name="mdtp_date_picker_view_animator_height_v2">320dp</dimen>-->
     <dimen name="mdtp_date_picker_view_animator_padding">8dp</dimen>
     <dimen name="mdtp_date_picker_view_animator_padding_v2">16dp</dimen>
     <dimen name="mdtp_date_picker_view_animator_padding_bottom_v2">6dp</dimen>
@@ -61,8 +62,9 @@
     <dimen name="mdtp_done_button_height">42dp</dimen>
 
     <dimen name="mdtp_month_list_item_header_height">56dp</dimen>
-    <dimen name="mdtp_month_list_item_header_height_v2">64dp</dimen>
-    <dimen name="mdtp_month_day_label_text_size">12sp</dimen>
+   <!-- <dimen name="mdtp_month_list_item_header_height_v2">64dp</dimen>-->
+    <dimen name="mdtp_month_list_item_header_height_v2">32dp</dimen>
+    <dimen name="mdtp_month_day_label_text_size">14sp</dimen>
     <dimen name="mdtp_day_number_select_circle_radius">16dp</dimen>
     <dimen name="mdtp_day_number_select_circle_radius_v2">20dp</dimen>
     <dimen name="mdtp_day_highlight_circle_radius">2dp</dimen>
@@ -74,7 +76,8 @@
     <dimen name="mdtp_date_picker_header_text_size">12dp</dimen>
     <dimen name="mdtp_time_picker_header_text_size">12dp</dimen>
     <dimen name="mdtp_month_label_size">14sp</dimen>
-    <dimen name="mdtp_day_number_size">12sp</dimen>
+    <dimen name="mdtp_day_number_size">14sp</dimen>
+    <dimen name="mdtp_today_number_size">10sp</dimen>
     <dimen name="mdtp_year_label_height">64dp</dimen>
     <dimen name="mdtp_year_label_text_size">22dp</dimen>
 

@@ -17,10 +17,11 @@
 package com.wdullaer.materialdatetimepicker.date;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.AbsListView.LayoutParams;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.wdullaer.materialdatetimepicker.date.MonthAdapter.MonthViewHolder;
 import com.wdullaer.materialdatetimepicker.date.MonthView.OnDayClickListener;
@@ -115,7 +116,7 @@ public abstract class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
     public MonthAdapter(DatePickerController controller) {
         mController = controller;
         init();
-        setSelectedDay(mController.getSelectedDay());
+//        setSelectedDay(mController.getSelectedDay());
         setHasStableIds(true);
     }
 
@@ -138,7 +139,7 @@ public abstract class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
      * Set up the gesture detector and selected time
      */
     protected void init() {
-        mSelectedDay = new CalendarDay(System.currentTimeMillis(), mController.getTimeZone());
+//        mSelectedDay = new CalendarDay(System.currentTimeMillis(), mController.getTimeZone());
     }
 
     @Override
@@ -155,7 +156,8 @@ public abstract class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
         return new MonthViewHolder(v);
     }
 
-    @Override public void onBindViewHolder(@NonNull MonthViewHolder holder, int position) {
+    @Override
+    public void onBindViewHolder(@NonNull MonthViewHolder holder, int position) {
         holder.bind(position, mController, mSelectedDay);
     }
 
@@ -164,7 +166,8 @@ public abstract class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
         return position;
     }
 
-    @Override public int getItemCount() {
+    @Override
+    public int getItemCount() {
         Calendar endDate = mController.getEndDate();
         Calendar startDate = mController.getStartDate();
         int endMonth = endDate.get(Calendar.YEAR) * MONTHS_IN_YEAR + endDate.get(Calendar.MONTH);
@@ -213,7 +216,7 @@ public abstract class MonthAdapter extends RecyclerView.Adapter<MonthViewHolder>
         }
 
         private boolean isSelectedDayInMonth(CalendarDay selectedDay, int year, int month) {
-            return selectedDay.year == year && selectedDay.month == month;
+            return selectedDay != null && selectedDay.year == year && selectedDay.month == month;
         }
     }
 }

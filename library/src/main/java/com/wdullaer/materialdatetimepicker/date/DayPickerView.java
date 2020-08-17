@@ -24,6 +24,11 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.wdullaer.materialdatetimepicker.GravitySnapHelper;
 import com.wdullaer.materialdatetimepicker.Utils;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateChangedListener;
@@ -31,11 +36,6 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateChangedLi
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * This displays a list of months in a calendar format with selectable days.
@@ -85,7 +85,7 @@ public abstract class DayPickerView extends RecyclerView implements OnDateChange
     protected void setController(DatePickerController controller) {
         mController = controller;
         mController.registerOnDateChangedListener(this);
-        mSelectedDay = new MonthAdapter.CalendarDay(mController.getTimeZone());
+//        mSelectedDay = new MonthAdapter.CalendarDay(mController.getTimeZone());
         mTempDay = new MonthAdapter.CalendarDay(mController.getTimeZone());
         refreshAdapter();
     }
@@ -181,6 +181,7 @@ public abstract class DayPickerView extends RecyclerView implements OnDateChange
 
         // Set the selected day
         if (setSelected) {
+            mSelectedDay = new MonthAdapter.CalendarDay(mController.getTimeZone());
             mSelectedDay.set(day);
         }
 
@@ -259,7 +260,8 @@ public abstract class DayPickerView extends RecyclerView implements OnDateChange
         return getChildAdapterPosition(getMostVisibleMonth());
     }
 
-    public @Nullable MonthView getMostVisibleMonth() {
+    public @Nullable
+    MonthView getMostVisibleMonth() {
         boolean verticalScroll = mController.getScrollOrientation() == DatePickerDialog.ScrollOrientation.VERTICAL;
         final int maxSize = verticalScroll ? getHeight() : getWidth();
         int maxDisplayedSize = 0;

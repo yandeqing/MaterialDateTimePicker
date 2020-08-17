@@ -57,4 +57,21 @@
         <item name="android:textColor">@color/mdtp_button_color</item>
         <item name="android:textAllCaps">true</item>
     </style>
+    <style name="AppDialog.BottomUp" parent="android:Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 为了避免在有 NavigationBar 的手机上 Dialog 从 NavigationBar 底部上来。去掉 Dialog 的动画，使用 View 的动画。-->
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:layout_width">match_parent</item>
+    </style>
+    <!-- DialogConfirmTitleBar -->
+    <declare-styleable name="DialogConfirmTitleBar">
+        <attr name="dialogConfirmTitleBar_titleName" format="string" />
+        <attr name="dialogConfirmTitleBar_titleNameColor" format="color" />
+        <attr name="dialogConfirmTitleBar_background" format="color" />
+        <attr name="dialogConfirmTitleBar_hasButton" format="boolean" />
+        <attr name="dialogConfirmTitleBar_leftButtonColor" format="color" />
+        <attr name="dialogConfirmTitleBar_rightButtonColor" format="color" />
+    </declare-styleable>
+
 </resources>
